@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (valid) {
                 // Here you would typically send the form data to a server
                 // For now, we'll just show a success message
-                contactForm.innerHTML = '<div class="success-message"><i class="fas fa-check-circle"></i><h3>Thank you for your message!</h3><p>Bass AI Solutions will get back to you shortly.</p></div>';
+                contactForm.innerHTML = '<div class="success-message"><i class="fas fa-check-circle"></i><h3>LMAO this doesnt do anything, i couldnt be bothered to set up an endpoint for this bit CHRIS.</h3><p>Bass AI Solutions will get back to you shortly.</p></div>';
             }
         });
     }
