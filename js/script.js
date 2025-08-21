@@ -325,11 +325,76 @@ document.addEventListener('DOMContentLoaded', function() {
             resize: vertical;
         }
         
-        @media (max-width: 768px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
+        /* Notification popup styles */
+        .notification-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .notification-popup.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .notification-popup.hide {
+            opacity: 0;
+            transform: translateY(20px);
         }
     `;
     document.head.appendChild(style);
+
+    // Function to show notification popup
+    function showNotification(message) {
+        // Remove any existing notifications
+        const existingNotification = document.querySelector('.notification-popup');
+        if (existingNotification) {
+            document.body.removeChild(existingNotification);
+        }
+
+        // Create new notification
+        const notification = document.createElement('div');
+        notification.className = 'notification-popup';
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        // Trigger animation
+        setTimeout(() => notification.classList.add('show'), 10);
+
+        // Set timeout to hide notification
+        setTimeout(() => {
+            notification.classList.add('hide');
+            notification.classList.remove('show');
+
+            // Remove from DOM after animation completes
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 4000);
+    }
+
+    // Copy to clipboard functionality
+    document.querySelectorAll('.copy-to-clipboard').forEach(element => {
+        element.addEventListener('click', function (event) {
+            event.preventDefault();
+            const textToCopy = this.getAttribute('data-clipboard');
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showNotification(`Copied to clipboard: ${textToCopy}`);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                showNotification('Failed to copy text');
+            });
+        });
+    });
 });
